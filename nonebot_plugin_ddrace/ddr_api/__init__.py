@@ -1,6 +1,6 @@
-from .ddr_get_data import ddr_data_get 
+from .ddr_get_data import DDRDataGet 
 
-ddr = ddr_data_get()
+ddr = DDRDataGet()
 pre_search = ddr.pre_search
 result_page = ddr.result_page
 profile_json = ddr.profile_json

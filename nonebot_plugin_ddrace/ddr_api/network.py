@@ -6,10 +6,10 @@ class NetWork:
     """
     NetWork 类用于处理 HTTP 请求，提供获取 HTML 和 JSON 数据的方法。
 
-    属性:
+    Attributes:
         client (AsyncClient): HTTP 客户端，用于发送异步请求。
 
-    方法:
+    Methods:
         close_client():
             关闭 HTTP 客户端。
         
@@ -33,10 +33,10 @@ class NetWork:
         """
         获取指定 URL 的 HTML 内容。
 
-        参数:
+        Args:
             url (str): 目标 URL。
 
-        返回:
+        Returns:
             Union[str, Dict[str, str]]: HTML 内容，如果请求失败则返回包含错误信息的字典。
         """
         try:
@@ -56,10 +56,10 @@ class NetWork:
         """
         获取指定 URL 的 JSON 数据。
 
-        参数:
+        Args:
             url (str): 目标 URL。
 
-        返回:
+        Returns:
             Union[dict, Dict[str, str]]: JSON 数据，如果请求失败则返回包含错误信息的字典。
         """
         try:

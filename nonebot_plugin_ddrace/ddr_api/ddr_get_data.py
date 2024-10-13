@@ -8,11 +8,11 @@ from .network import NetWork as Network
 from .constants import *
 
 
-class ddr_data_get:
+class DDRDataGet:
     """
-
-    ddr_data_get 类用于处理 DDR 数据的获取和转换。
-    方法:
+    用于处理 DDR 数据的获取和转换。
+    
+    Methods:
         __init__:
         close:
         arg_convert:
@@ -33,51 +33,51 @@ class ddr_data_get:
         """
         await self.net.close_client()
 
-    def arg_convert(self, stype: str, sname: str, fun: str) -> Dict[str, str]:
+    def arg_convert(self, search_type: str, search_name: str, fun: str) -> Dict[str, str]:
         """
         将输入参数转换为适合 URL 的格式，并进行校验。
 
-        参数:
-            stype (str): 搜索类型，可以是 "map", "mapper", "player"。
-            sname (str): 搜索名称，不可为空。
+        Args:
+            search_type (str): 搜索类型，可以是 "map", "mapper", "player"。
+            search_name (str): 搜索名称，不可为空。
             fun (str): 功能类型，可以是 "pre_search", "result_page", "profile_json"。
 
-        返回:
+        Returns:
             Dict[str, str]: 包含转换后参数的字典。
 
-        异常:
-            ValueError: 当 stype 或 sname 无效时抛出。
+        Raises:
+            ValueError: 当 search_type 或 search_name 无效时抛出。
         """
         try:
-            # 对 stype 进行校验
+            # 对 search_type 进行校验
             if fun in ["pre_search", "result_page"]:
-                if stype not in ["map", "mapper", "player"]:
-                    raise ValueError(f"不存在的类型: {stype}")
+                if search_type not in ["map", "mapper", "player"]:
+                    raise ValueError(f"不存在的类型: {search_type}")
             elif fun in ["profile_json"]:
-                if stype not in ["map", "player"]:
-                    raise ValueError(f"不存在的类型: {stype}")
-            # 对 sname 为空 进行校验
-            if not sname:
+                if search_type not in ["map", "player"]:
+                    raise ValueError(f"不存在的类型: {search_type}")
+            # 对 search_name 为空 进行校验
+            if not search_name:
                 raise ValueError("名称不能为空")
-            # 更改 sname 符合 URL 格式
-            # hexed_sname = quote(sname)
+            # 更改 search_name 符合 URL 格式
+            # hexed_search_name = quote(search_name)
             # if fun in ["pre_search", "profile_json"]:
-            #     encoded_sname = hexed_sname
-            #     logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
+            #     encoded_search_name = hexed_search_name
+            #     logger.debug(f"fun: {fun}, type: {search_type}, name: {search_name}, encoded_name: {encoded_search_name}")
             # elif fun in ["result_page"]:
-            #     encoded_sname = re.sub(
+            #     encoded_search_name = re.sub(
             #         r'%([0-9A-Fa-f]{2})',
             #         # lambda match: f"-{int(match.group(1),16)}-",
-            #         # hexed_sname
+            #         # hexed_search_name
             #         lambda match: f"\\u{int(match.group(1), 16):04x}",
-            #         hexed_sname.encode('unicode_escape').decode('ascii')
+            #         hexed_search_name.encode('unicode_escape').decode('ascii')
             #     )
-            #     logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
+            #     logger.debug(f"fun: {fun}, type: {search_type}, name: {search_name}, encoded_name: {encoded_search_name}")
             
-            return {"stype":stype,"sname":sname}
+            return {"search_type":search_type,"search_name":search_name}
 
         except ValueError as ve:
-            # 处理无效的 stype 或 sname 参数
+            # 处理无效的 search_type 或 search_name 参数
             error_message = f"ValueError: {ve}"
             logger.error(error_message)
             return {"error": error_message}
@@ -87,81 +87,81 @@ class ddr_data_get:
             logger.error(error_message)
             return {"error": error_message}
 
-    async def pre_search(self, stype: str, sname: str) -> Union[dict, Dict[str, str]]:
+    async def pre_search(self, search_type: str, search_name: str) -> Union[dict, Dict[str, str]]:
         """
         预搜索功能，根据类型和名称获取相关数据，异步。
 
-        参数:
-            stype (str): 搜索类型，可以是 "map", "mapper", "player"。
-            sname (str): 搜索名称，不可为空。
+        Args:
+            search_type (str): 搜索类型，可以是 "map", "mapper", "player"。
+            search_name (str): 搜索名称，不可为空。
 
-        返回:
+        Returns:
             Union[dict, Dict[str, str]]: 返回包含搜索结果的字典，或者包含错误信息的字典。
         """
         # arg_convert 参数合规性检查转换
-        converted_args = self.arg_convert(stype, sname, "pre_search")
-        stype = converted_args.get("stype","")
-        sname = converted_args.get("sname","")
-        logger.debug(f"stype: {stype}, sname: {sname}")
+        converted_args = self.arg_convert(search_type, search_name, "pre_search")
+        search_type = converted_args.get("search_type","")
+        search_name = converted_args.get("search_name","")
+        logger.debug(f"search_type: {search_type}, search_name: {search_name}")
         # 逻辑
         url = ""
-        if stype == "map":
-            url = MAP_QUERY_URL.format(sname)
-        elif stype == "mapper":
-            url = MAPPER_QUERY_URL.format(sname)
-        elif stype == "player":
-            url = PLAYER_QUERY_URL.format(sname)
+        if search_type == "map":
+            url = MAP_QUERY_URL.format(search_name)
+        elif search_type == "mapper":
+            url = MAPPER_QUERY_URL.format(search_name)
+        elif search_type == "player":
+            url = PLAYER_QUERY_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)
 
-    async def result_page(self, stype: str,sname: str) -> Union[str, Dict[str, str]]:
+    async def result_page(self, search_type: str,search_name: str) -> Union[str, Dict[str, str]]:
         """
         获取搜索结果页面，异步。
         
-        参数:
-            stype (str): 搜索类型，可以是 "map"、"mapper" 或 "player"。
-            sname (str): 搜索名称，不可为空。
+        Args:
+            search_type (str): 搜索类型，可以是 "map"、"mapper" 或 "player"。
+            search_name (str): 搜索名称，不可为空。
         
-        返回:
+        Returns:
             Union[str, Dict[str, str]]: 返回搜索结果页面的 HTML 内容，或者包含错误信息的字典。
         """
         # arg_convert 参数合规性检查转换
-        converted_args = self.arg_convert(stype, sname, "pre_search")
-        stype = converted_args.get("stype","")
-        sname = converted_args.get("sname","")
+        converted_args = self.arg_convert(search_type, search_name, "pre_search")
+        search_type = converted_args.get("search_type","")
+        search_name = converted_args.get("search_name","")
         # 逻辑
         url = ""
-        if stype == "map":
-            url = MAP_URL.format(sname)
-        elif stype == "mapper":
-            url = MAPPER_URL.format(sname)
-        elif stype == "player":
-            url = PLAYER_URL.format(sname)
+        if search_type == "map":
+            url = MAP_URL.format(search_name)
+        elif search_type == "mapper":
+            url = MAPPER_URL.format(search_name)
+        elif search_type == "player":
+            url = PLAYER_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_html(url)
 
-    async def profile_json(self, stype: str, sname: str) -> Union[dict, Dict[str, str]]:
+    async def profile_json(self, search_type: str, search_name: str) -> Union[dict, Dict[str, str]]:
         """
         获取指定类型和名称的配置文件数据，异步。
         
-        参数:
-            stype (str): 搜索类型，可以是 "map" 或 "player"。
-            sname (str): 搜索名称，不可为空。
+        Args:
+            search_type (str): 搜索类型，可以是 "map" 或 "player"。
+            search_name (str): 搜索名称，不可为空。
         
-        返回:
+        Returns:
             Union[dict, Dict[str, str]]: 返回包含配置文件数据的字典，或者包含错误信息的字典。
         """
         # arg_convert 参数合规性检查转换
-        converted_args = self.arg_convert(stype, sname, "pre_search")
-        stype = converted_args.get("stype","")
-        sname = converted_args.get("sname","")
+        converted_args = self.arg_convert(search_type, search_name, "pre_search")
+        search_type = converted_args.get("search_type","")
+        search_name = converted_args.get("search_name","")
         # 逻辑
         url = ""
-        if stype == "map":
-            url = MAP_JSON_URL.format(sname)
-        # elif stype == "mapper":
-        #     url = MAPPER_QUERY_URL.format(sname)
-        elif stype == "player":
-            url = PLAYER_JSON_URL.format(sname)
+        if search_type == "map":
+            url = MAP_JSON_URL.format(search_name)
+        # elif search_type == "mapper":
+        #     url = MAPPER_QUERY_URL.format(search_name)
+        elif search_type == "player":
+            url = PLAYER_JSON_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)
