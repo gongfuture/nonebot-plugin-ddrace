@@ -60,17 +60,19 @@ class ddr_data_get:
             if not sname:
                 raise ValueError("名称不能为空")
             # 更改 sname 符合 URL 格式
-            hexed_sname = quote(sname)
-            if fun in ["pre_search", "profile_json"]:
-                encoded_sname = hexed_sname
-                logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
-            elif fun in ["result_page"]:
-                encoded_sname = re.sub(
-                    r'%([0-9A-Fa-f]{2})',
-                    lambda match: f"-{int(match.group(1),16)}-",
-                    hexed_sname
-                )
-                logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
+            # hexed_sname = quote(sname)
+            # if fun in ["pre_search", "profile_json"]:
+            #     encoded_sname = hexed_sname
+            #     logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
+            # elif fun in ["result_page"]:
+            #     encoded_sname = re.sub(
+            #         r'%([0-9A-Fa-f]{2})',
+            #         # lambda match: f"-{int(match.group(1),16)}-",
+            #         # hexed_sname
+            #         lambda match: f"\\u{int(match.group(1), 16):04x}",
+            #         hexed_sname.encode('unicode_escape').decode('ascii')
+            #     )
+            #     logger.debug(f"fun: {fun}, type: {stype}, name: {sname}, encoded_name: {encoded_sname}")
             
             return {"stype":stype,"sname":sname}
 

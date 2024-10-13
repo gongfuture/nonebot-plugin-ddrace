@@ -20,7 +20,8 @@ class NetWork:
             获取指定 URL 的 JSON 数据。
     """
     def __init__(self):
-        self.client = AsyncClient()
+        # self.client = AsyncClient()
+        self.client = AsyncClient(follow_redirects=True)
 
     async def close_client(self):
         """
