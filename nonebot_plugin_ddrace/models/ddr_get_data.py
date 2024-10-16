@@ -1,11 +1,10 @@
-import re
-from urllib.parse import quote
+
 from typing import Union, Dict
 
 from nonebot.log import logger
 
-from .network import NetWork as Network
-from .constants import *
+from ..models import NetWork as Network
+from ..utils import constants
 
 
 class DDRDataGet:
@@ -106,11 +105,11 @@ class DDRDataGet:
         # 逻辑
         url = ""
         if search_type == "map":
-            url = MAP_QUERY_URL.format(search_name)
+            url = constants.MAP_QUERY_URL.format(search_name)
         elif search_type == "mapper":
-            url = MAPPER_QUERY_URL.format(search_name)
+            url = constants.MAPPER_QUERY_URL.format(search_name)
         elif search_type == "player":
-            url = PLAYER_QUERY_URL.format(search_name)
+            url = constants.PLAYER_QUERY_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)
 
@@ -132,11 +131,11 @@ class DDRDataGet:
         # 逻辑
         url = ""
         if search_type == "map":
-            url = MAP_URL.format(search_name)
+            url = constants.MAP_PAGE_URL.format(search_name)
         elif search_type == "mapper":
-            url = MAPPER_URL.format(search_name)
+            url = constants.MAPPER_PAGE_URL.format(search_name)
         elif search_type == "player":
-            url = PLAYER_URL.format(search_name)
+            url = constants.PLAYER_PAGE_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_html(url)
 
@@ -158,10 +157,10 @@ class DDRDataGet:
         # 逻辑
         url = ""
         if search_type == "map":
-            url = MAP_JSON_URL.format(search_name)
+            url = constants.MAP_JSON_URL.format(search_name)
         # elif search_type == "mapper":
         #     url = MAPPER_QUERY_URL.format(search_name)
         elif search_type == "player":
-            url = PLAYER_JSON_URL.format(search_name)
+            url = constants.PLAYER_JSON_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)

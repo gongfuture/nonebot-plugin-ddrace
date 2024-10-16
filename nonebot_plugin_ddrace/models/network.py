@@ -1,6 +1,10 @@
+from typing import Union, Dict
+from urllib.parse import urljoin
 from nonebot.log import logger
 from httpx import HTTPError, AsyncClient
-from typing import Union, Dict
+from bs4 import BeautifulSoup
+from ..utils import constants
+
 
 class NetWork:
     """
@@ -12,6 +16,9 @@ class NetWork:
     Methods:
         close_client():
             关闭 HTTP 客户端。
+
+        convert_relative_to_absolute(self, html_content:str, base_url:str) -> str:
+            将 HTML 内容中的相对 URL 转换为绝对 URL。
         
         get_html(url: str) -> str:
             获取指定 URL 的 HTML 内容。
@@ -20,7 +27,6 @@ class NetWork:
             获取指定 URL 的 JSON 数据。
     """
     def __init__(self):
-        # self.client = AsyncClient()
         self.client = AsyncClient(follow_redirects=True)
 
     async def close_client(self):
@@ -29,7 +35,39 @@ class NetWork:
         """
         await self.client.aclose()
 
-    async def get_html(self,url) -> Union[str, Dict[str, str]]:
+    def convert_relative_to_absolute(self, html_content:str, base_url:str) -> str:
+        """
+        将 HTML 内容中的相对 URL 转换为绝对 URL。
+        
+        Args:
+            html_content (str): 包含 HTML 内容的字符串。
+            base_url (str): 用于转换相对 URL 的基准 URL。
+        
+        Returns:
+            str: 转换后的 HTML 内容，所有相对 URL 均已转换为绝对 URL。
+        """
+        
+        soup = BeautifulSoup(html_content, 'html.parser')
+        tags = soup.find_all(
+            ['a', 'script', 'img', 'iframe', 'audio', 'video', 'source', 'object', 'embed']
+            )
+
+        for tag in tags:
+            attr = None
+            if tag.name == 'a':
+                attr = 'href'
+            elif tag.name in 'script':
+                attr = 'href' if tag.has_attr('href') else 'src'
+            elif tag.name in ['img', 'iframe', 'audio', 'video', 'source', 'object', 'embed']:
+                attr = 'src'
+
+            if attr and tag.get(attr):
+                tag[attr] = urljoin(base_url, tag[attr])
+
+        return str(soup)
+
+
+    async def get_html(self, url:str) -> Union[str, Dict[str, str]]:
         """
         获取指定 URL 的 HTML 内容。
 
@@ -42,7 +80,8 @@ class NetWork:
         try:
             response = await self.client.get(url)
             response.raise_for_status()
-            return response.text
+            absolute_response = self.convert_relative_to_absolute(response, url)
+            return absolute_response
         except HTTPError as e:
             error_message = f"HTTP error occurred: {e}"
             logger.error(error_message)
@@ -52,7 +91,8 @@ class NetWork:
             logger.error(error_message)
             return {"error": error_message}
 
-    async def get_json(self,url) -> Union[dict, Dict[str, str]]:
+
+    async def get_json(self,url:str) -> Union[dict, Dict[str, str]]:
         """
         获取指定 URL 的 JSON 数据。
 

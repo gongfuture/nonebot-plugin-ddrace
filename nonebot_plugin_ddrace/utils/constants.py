@@ -1,4 +1,4 @@
-# region Description: DDRace相关API
+# region DDRace相关内容
 
 # 主域名
 DDR_ROOT_URL = "https://ddnet.org/"
@@ -24,9 +24,9 @@ PLAYER_QUERY_URL = DDR_ROOT_URL + "players/?query={}"
 # 子页面URL
 # 参数格式例Sunny Side Up的参数为Sunny-32-Side-32-Up，特殊符号-DEC-
 # 可使用 JSON website 获取
-MAP_URL= DDR_ROOT_URL + "maps/{}"
-MAPPER_URL = DDR_ROOT_URL + "mappers/{}"
-PLAYER_URL = DDR_ROOT_URL + "players/{}/"
+MAP_PAGE_URL= DDR_ROOT_URL + "maps/{}"
+MAPPER_PAGE_URL = DDR_ROOT_URL + "mappers/{}"
+PLAYER_PAGE_URL = DDR_ROOT_URL + "players/{}/"
 # JSON URL
 # 参数格式例Sunny Side Up的参数为Sunny+Side+Up，空格为+，特殊符号%HEX，测试后发现%20也可
 MAP_JSON_URL = DDR_ROOT_URL + "maps/?json={}"
@@ -43,3 +43,9 @@ SKIN_ROOT_URL = DDR_ROOT_URL + "skins/index.php"
 # endregion
 
 # endregion
+
+
+# region 生成图片相关
+# Player Global Ranks
+PLAYER_GLOBAL_RANKS_ELEMENT_IDS = "global" 
+PLAYER_GLOBAL_RANKS_FILTER_IDS = "remote"
