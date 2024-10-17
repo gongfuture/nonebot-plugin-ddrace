@@ -1,7 +1,7 @@
 from typing import Union, Dict
 from urllib.parse import urljoin
 from nonebot.log import logger
-from httpx import HTTPError, AsyncClient
+from httpx import HTTPError, AsyncClient, HTTPStatusError
 from bs4 import BeautifulSoup
 from ..utils import constants
 
@@ -82,10 +82,15 @@ class NetWork:
             response.raise_for_status()
             absolute_response = self.convert_relative_to_absolute(response, url)
             return absolute_response
-        except HTTPError as e:
-            error_message = f"HTTP error occurred: {e}"
-            logger.error(error_message)
-            return {"error": error_message}
+        except HTTPStatusError  as e:
+            if e.response.status_code == 404:
+                error_message = f"Client error '404 Not Found' for url '{url}'"
+                logger.error(error_message)
+                return {"404error": error_message}
+            else:
+                error_message = f"HTTP error occurred: {e}"
+                logger.error(error_message)
+                return {"error": error_message}
         except Exception as e:
             error_message = f"An error occurred: {e}"
             logger.error(error_message)

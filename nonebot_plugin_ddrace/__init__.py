@@ -67,7 +67,10 @@ async def test_handle(bot: ConsoleBot, event: BaseEvent,args: T_State):
 async def points_handle(bot: BaseBot, event: Union[V12MessageEvent, V11MessageEvent], args: BaseMessage = CommandArg()):
     if name := args.extract_plain_text():
         html = await result_page("player", name)
-        pic = await html2pic(html)
+        logger.debug(f"points_handle: {html}")
+        if "404error" in html:
+            await points.reject(f"未找到 {name} 的成绩信息")
+        pic = await html2pic(html,True,filter_css="static/player_global_ranks.css")
         message = Image(pic)
         await message.send()
         await points.finish()
