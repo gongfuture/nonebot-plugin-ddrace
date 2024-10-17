@@ -1,7 +1,8 @@
 from .constants import *
-from .path import PathClass
+from .tools import PathClass, InputCheck
 
 __all__ = [
     "constants",
-    "PathClass"
+    "PathClass",
+    "InputCheck"
 ]
