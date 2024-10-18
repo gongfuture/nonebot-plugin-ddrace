@@ -12,7 +12,7 @@ from nonebot.typing import T_State
 
 from .models import *
 from .utils import *
-from .config import Config
+from .config import PluginConfig
 from . import _version
 
 require("nonebot_plugin_htmlrender")
@@ -21,7 +21,7 @@ require("nonebot_plugin_saa")
 from nonebot_plugin_saa import MessageFactory, MessageSegmentFactory, Image, Text
 
 driver = get_driver()
-plugin_config = get_plugin_config(Config)
+plugin_config = get_plugin_config(PluginConfig)
 
 #region metadata
 __version__ = _version.__version__
@@ -35,7 +35,7 @@ __plugin_meta__ = PluginMetadata(
     usage=__usage__,
     type="application",
     homepage="https://github.com/gongfuture/nonebot-plugin-ddrace",
-    config=Config,
+    config=PluginConfig,
     supported_adapters={"~onebot.v11"},
     extra={
         "author": "Github @gongfuture",
