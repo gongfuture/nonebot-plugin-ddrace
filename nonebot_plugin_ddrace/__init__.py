@@ -5,7 +5,6 @@ from nonebot import get_driver, get_plugin_config, require, logger, on_command
 from nonebot.adapters import Bot as BaseBot, Event as BaseEvent, Message as BaseMessage , MessageSegment as BaseMessageSegment
 from nonebot.adapters.onebot.v11.event import MessageEvent as V11MessageEvent
 from nonebot.adapters.onebot.v12.event import MessageEvent as V12MessageEvent
-from nonebot.adapters.console import Bot as ConsoleBot
 from nonebot.params import CommandArg, Depends
 from nonebot.plugin import PluginMetadata
 from nonebot.rule import Rule, to_me
