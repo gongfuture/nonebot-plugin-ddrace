@@ -141,14 +141,14 @@ class DDRDataGet:
 
     async def profile_json(self, search_type: str, search_name: str) -> Union[dict, Dict[str, str]]:
         """
-        获取指定类型和名称的配置文件数据，异步。
+        获取指定类型和名称的数据，异步。
         
         Args:
             search_type (str): 搜索类型，可以是 "map" 或 "player"。
             search_name (str): 搜索名称，不可为空。
         
         Returns:
-            Union[dict, Dict[str, str]]: 返回包含配置文件数据的字典，或者包含错误信息的字典。
+            Union[dict, Dict[str, str]]: 返回包含数据的字典，或者包含错误信息的字典。
         """
         # arg_convert 参数合规性检查转换
         converted_args = self.arg_convert(search_type, search_name, "pre_search")
@@ -164,3 +164,5 @@ class DDRDataGet:
             url = constants.PLAYER_JSON_URL.format(search_name)
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)
+
+
