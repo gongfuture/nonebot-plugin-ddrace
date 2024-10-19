@@ -1,28 +1,19 @@
-import os
+from pathlib import Path
 
 
 class PathClass:
 
-    def rootpath(self):
-        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    def rootpath(self) -> Path:
+        return Path(__file__).resolve().parent.parent
 
-    def workpath(self):
-        return os.getcwd()
+    def workpath(self) -> Path:
+        return Path.cwd()
 
-    def join(self, *args):
-        return os.path.join(*args)
+    def rootpathcomplete(self, path: str) -> Path:
+        return self.rootpath() / path
 
-    def abspath(self, path):
-        return os.path.abspath(path)
-
-    def normpath(self, path):
-        return os.path.normpath(path)
-
-    def rootpathcomplete(self, path):
-        return self.normpath(self.join(self.rootpath(), path))
-
-    def workpathcomplete(self, path):
-        return self.normpath(self.join(self.workpath(), path))
+    def workpathcomplete(self, path: str) -> Path:
+        return self.workpath() / path
 
 class InputCheck:
 
@@ -75,3 +66,10 @@ class InputCheck:
         if isinstance(types, type):
             types = (types,)
         return isinstance(value, types)
+
+
+if __name__ == "__main__":
+    print(PathClass().rootpath())
+    print(type(PathClass().rootpath()))
+    print(PathClass().workpath())
+    print(type(PathClass().workpath()))
