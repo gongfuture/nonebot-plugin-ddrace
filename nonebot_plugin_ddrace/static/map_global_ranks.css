@@ -1,0 +1,11 @@
+section *:not(#global):not(#global *):not(p):not(p *){display: none;}
+#global:nth-of-type(1) {display:none}
+#global{
+  width: 100%;
+  height: 100%;
+}
+html,
+body {
+  width: 80%;
+  height:80%
+}
