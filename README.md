@@ -12,12 +12,21 @@ _✨ 提供 DDNet 成绩查询功能 ✨_
 
 
 <a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/gongfuture/nonebot-plugin-ddrace.svg" alt="license">
+    <img src="https://img.shields.io/github/license/gongfuture/nonebot-plugin-ddrace.svg?style=for-the-badge" alt="license">
 </a>
+<img src="https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge" alt="python">
 <a href="https://pypi.python.org/pypi/nonebot-plugin-ddrace">
-    <img src="https://img.shields.io/pypi/v/nonebot-plugin-ddrace.svg" alt="pypi">
+    <img src="https://img.shields.io/pypi/v/nonebot-plugin-ddrace.svg?style=for-the-badge" alt="pypi">
 </a>
-<img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="python">
+<a href="https://www.codefactor.io/repository/github/gongfuture/nonebot-plugin-ddrace">
+<img src="https://img.shields.io/codefactor/grade/github/gongfuture/nonebot-plugin-ddrace?color=red&style=for-the-badge">
+</a>
+<a href="https://github.com/gongfuture/nonebot-plugin-ddrace/commits/main">
+<img src="https://img.shields.io/github/last-commit/gongfuture/nonebot-plugin-ddrace?color=red&style=for-the-badge">
+</a>
+<a href="https://wakatime.com/@gongfuture"><img src="https://wakatime.com/badge/github/gongfuture/nonebot-plugin-ddrace.svg?style=for-the-badge" /></a>
+<a href="https://qm.qq.com/q/OfK3d9r6o2"><img src="https://img.shields.io/badge/QQ群-611124274-blue?logo=tencentqq&style=for-the-badge" /></a>
+
 
 </div>
 
@@ -26,6 +35,7 @@ _✨ 提供 DDNet 成绩查询功能 ✨_
 
 这是一个 nonebot2 插件，提供 DDNet 成绩查询功能
 可以查询玩家的成绩~~，服务器的状态等信息(还没写好)~~，使用图片发送(这个真有)
+Python新手项目，代码质量低，欢迎各位大佬指导/PR
 
 ## 💿 安装
 
