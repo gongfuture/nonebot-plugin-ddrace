@@ -2,7 +2,7 @@ import json
 from typing import Union
 from nonebot import require, logger
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 from ..utils import PathClass, constants
 from ..config import PluginConfig
 require("nonebot_plugin_apscheduler")
@@ -82,6 +82,13 @@ class CacheClass:
             return int(datetime.now().timestamp()) - cache_exist_time
         else:
             return -1
+
+    def check_cache_time(self, key: str) -> bool:
+        cache_exist_time = self.get_cache_exist_time(key)
+        if cache_exist_time > cache_time * 60:
+            return False
+        else:
+            return True
 
     def clear_cache(self) -> None:
         now = int(datetime.now().timestamp())
