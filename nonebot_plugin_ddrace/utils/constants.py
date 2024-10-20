@@ -2,6 +2,7 @@ from .tools import PathClass
 
 CONFIG_JSON_PATH = PathClass().ddrconfigpath() / "ddrconfig.json"
 DATA_JSON_PATH = PathClass().ddrdatapath() / "ddrdata.json"
+CACHE_TIME_FILE = PathClass().ddrcachepath() / "_cache_time_record.json"
 
 # region DDRace相关内容
 

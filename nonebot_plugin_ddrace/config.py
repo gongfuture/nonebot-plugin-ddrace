@@ -13,9 +13,10 @@ class PluginConfig(BaseModel):
     ddr_need_at: bool = False
     ddr_at_back: bool = False
     ddr_reply: bool = True
-    ddr_priority: int = Field(10, ge=1)
+    ddr_priority: int = Field(default=10, ge=1)
     ddr_block: bool = True
     ddr_command_pre_alias: str = ""
+    ddr_cache_time: int = Field(default=60, ge=0, description="缓存时间，单位为分钟，为 0 时不缓存，默认为 60 分钟")
 
 
 driver = get_driver()
@@ -26,9 +27,14 @@ ddr_config = get_plugin_config(PluginConfig)
 async def _() -> None:
     ddr_config_path: Path = PathClass().ddrconfigpath()
     ddr_data_path: Path = PathClass().ddrdatapath()
+    ddr_cache_path: Path = PathClass().ddrcachepath()
 
+    if not ddr_config_path.exists():
+        ddr_config_path.mkdir(parents=True, exist_ok=True)
     if not ddr_data_path.exists():
         ddr_data_path.mkdir(parents=True, exist_ok=True)
+    if not ddr_cache_path.exists():
+        ddr_cache_path.mkdir(parents=True, exist_ok=True)
 
     config_json_path = constants.CONFIG_JSON_PATH
 
