@@ -1,6 +1,7 @@
 from pathlib import Path
-
-
+from nonebot import require
+require("nonebot_plugin_localstore")
+import nonebot_plugin_localstore as store
 class PathClass:
 
     def rootpath(self) -> Path:
@@ -14,6 +15,16 @@ class PathClass:
 
     def workpathcomplete(self, path: str) -> Path:
         return self.workpath() / path
+
+    def ddrconfigpath(self) -> Path:
+        return store.get_plugin_config_dir()
+
+    def ddrdatapath(self) -> Path:
+        return store.get_plugin_data_dir()
+
+    def ddrcachepath(self) -> Path:
+        return store.get_plugin_cache_dir()
+
 
 class InputCheck:
 

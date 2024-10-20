@@ -1,3 +1,8 @@
+from .tools import PathClass
+
+CONFIG_JSON_PATH = PathClass().ddrconfigpath() / "ddrconfig.json"
+DATA_JSON_PATH = PathClass().ddrdatapath() / "ddrdata.json"
+
 # region DDRace相关内容
 
 # 主域名
