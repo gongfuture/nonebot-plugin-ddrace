@@ -87,6 +87,7 @@ def add_css(html_str: str, css_content: str = "", css_path: Union[Path,str] = ""
                 head = soup.new_tag('head')
                 if soup.html is None:
                     logger.debug("add_css: HTML 标签不存在")
+                    return html_str
                 soup.html.insert(0, head)
 
             # 创建 <style> 标签并插入 CSS 内容
