@@ -1,9 +1,42 @@
-from typing import Union, Dict
+from typing import Any, Awaitable, Callable, Union, Dict
 from urllib.parse import urljoin
 from nonebot.log import logger
 from httpx import HTTPError, AsyncClient, HTTPStatusError
 from bs4 import BeautifulSoup
 from ..utils import constants
+
+
+async def catch_error(func: Callable[..., Awaitable[Any]], *args, **kwargs) -> Any:
+    """
+    安全执行异步函数，捕获异常并记录错误日志。
+
+    Args:
+        func (Callable[..., Awaitable[Any]]): 要执行的异步函数。
+        *args: 传递给函数的位置参数。
+        **kwargs: 传递给函数的关键字参数。
+
+    Returns:
+        Any: 函数的返回值，如果发生异常则返回包含错误信息的字典。
+    """
+    try:
+        return await func(*args, **kwargs)
+    except HTTPStatusError as e:
+        if e.response.status_code == 404:
+            error_message = f"Client error '404 Not Found' for url '{args[0]}'"
+            logger.error(error_message)
+            return {"404error": error_message}
+        else:
+            error_message = f"HTTP error occurred: {e}"
+            logger.error(error_message)
+            return {"error": error_message}
+    except HTTPError as e:
+        error_message = f"HTTP error occurred: {e}"
+        logger.error(error_message)
+        return {"error": error_message}
+    except Exception as e:
+        error_message = f"An error occurred: {e}"
+        logger.error(error_message)
+        return {"error": error_message}
 
 
 class NetWork:
@@ -17,13 +50,13 @@ class NetWork:
         close_client():
             关闭 HTTP 客户端。
 
-        convert_relative_to_absolute(self, html_content:str, base_url:str) -> str:
+        convert_relative_to_absolute(self, html_content: str, base_url: str) -> str:
             将 HTML 内容中的相对 URL 转换为绝对 URL。
         
-        get_html(url: str) -> str:
+        get_html(url: str) -> Union[str, Dict[str, str]]:
             获取指定 URL 的 HTML 内容。
         
-        get_json(url: str) -> dict:
+        get_json(url: str) -> Union[dict, Dict[str, str]]:
             获取指定 URL 的 JSON 数据。
     """
     def __init__(self):
@@ -35,7 +68,7 @@ class NetWork:
         """
         await self.client.aclose()
 
-    def convert_relative_to_absolute(self, html_content:str, base_url:str) -> str:
+    def convert_relative_to_absolute(self, html_content: str, base_url: str) -> str:
         """
         将 HTML 内容中的相对 URL 转换为绝对 URL。
         
@@ -46,11 +79,10 @@ class NetWork:
         Returns:
             str: 转换后的 HTML 内容，所有相对 URL 均已转换为绝对 URL。
         """
-        
         soup = BeautifulSoup(html_content, 'html.parser')
         tags = soup.find_all(
             ['a', 'script', 'img', 'iframe', 'audio', 'video', 'source', 'object', 'embed']
-            )
+        )
 
         for tag in tags:
             attr = None
@@ -66,8 +98,21 @@ class NetWork:
 
         return str(soup)
 
+    async def _fetch(self, url: str) -> Any:
+        """
+        发送 HTTP GET 请求并返回响应。
 
-    async def get_html(self, url:str) -> Union[str, Dict[str, str]]:
+        Args:
+            url (str): 目标 URL。
+
+        Returns:
+            Any: HTTP 响应对象。
+        """
+        response = await self.client.get(url)
+        response.raise_for_status()
+        return response
+
+    async def get_html(self, url: str) -> Union[str, Dict[str, str]]:
         """
         获取指定 URL 的 HTML 内容。
 
@@ -77,27 +122,12 @@ class NetWork:
         Returns:
             Union[str, Dict[str, str]]: HTML 内容，如果请求失败则返回包含错误信息的字典。
         """
-        try:
-            response = await self.client.get(url)
-            response.raise_for_status()
-            absolute_response = self.convert_relative_to_absolute(response, url)
-            return absolute_response
-        except HTTPStatusError  as e:
-            if e.response.status_code == 404:
-                error_message = f"Client error '404 Not Found' for url '{url}'"
-                logger.error(error_message)
-                return {"404error": error_message}
-            else:
-                error_message = f"HTTP error occurred: {e}"
-                logger.error(error_message)
-                return {"error": error_message}
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            logger.error(error_message)
-            return {"error": error_message}
+        response = await catch_error(self._fetch, url)
+        if isinstance(response, dict):
+            return response
+        return self.convert_relative_to_absolute(response.text, url)
 
-
-    async def get_json(self,url:str) -> Union[dict, Dict[str, str]]:
+    async def get_json(self, url: str) -> Union[dict, Dict[str, str]]:
         """
         获取指定 URL 的 JSON 数据。
 
@@ -107,20 +137,7 @@ class NetWork:
         Returns:
             Union[dict, Dict[str, str]]: JSON 数据，如果请求失败则返回包含错误信息的字典。
         """
-        try:
-            response = await self.client.get(url)
-            response.raise_for_status()
-            return response.json()
-        except HTTPStatusError  as e:
-            if e.response.status_code == 404:
-                error_message = f"Client error '404 Not Found' for url '{url}'"
-                logger.error(error_message)
-                return {"404error": error_message}
-            else:
-                error_message = f"HTTP error occurred: {e}"
-                logger.error(error_message)
-                return {"error": error_message}
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            logger.error(error_message)
-            return {"error": error_message}
+        response = await catch_error(self._fetch, url)
+        if isinstance(response, dict):
+            return response
+        return response.json()
