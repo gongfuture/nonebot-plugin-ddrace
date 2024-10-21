@@ -1,8 +1,31 @@
 from .tools import PathClass
 
+
+# region Path
+
 CONFIG_JSON_PATH = PathClass().ddrconfigpath() / "ddrconfig.json"
 DATA_JSON_PATH = PathClass().ddrdatapath() / "ddrdata.json"
 CACHE_TIME_FILE = PathClass().ddrcachepath() / "_cache_time_record.json"
+
+# endregion
+
+# region Cache
+
+# 图片缓存文件名
+PLAYER_GLOBAL_RANKS_PICTURE_CACHE = "player_global_ranks_{player_name}.png"
+MAP_GLOBAL_RANKS_PICTURE_CACHE = "map_global_ranks_{map_name}.png"
+
+# 数据JSON缓存文件名
+PLAYER_PROFILE_JSON_CACHE = "player_profile_{player_name}.json"
+MAP_PROFILE_JSON_CACHE = "map_profile_{map_name}.json"
+
+# 预搜索JSON缓存文件名
+PLAYER_PRESEARCH_JSON_CACHE = "player_presearch_{player_name}.json"
+MAP_PRESEARCH_JSON_CACHE = "map_presearch_{map_name}.json"
+
+# endregion
+
+
 
 # region DDRace相关内容
 
@@ -49,9 +72,3 @@ SKIN_ROOT_URL = DDR_ROOT_URL + "skins/index.php"
 # endregion
 
 # endregion
-
-
-# region 生成图片相关
-# Player Global Ranks
-PLAYER_GLOBAL_RANKS_ELEMENT_IDS = "global" 
-PLAYER_GLOBAL_RANKS_FILTER_IDS = "remote"
