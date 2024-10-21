@@ -59,7 +59,7 @@ class NetWork:
             获取指定 URL 的 JSON 数据。
     """
     def __init__(self):
-        self.client = AsyncClient(follow_redirects=True)
+        self.client = AsyncClient(follow_redirects=True ,timeout=15)
 
     async def close_client(self):
         """
