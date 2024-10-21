@@ -47,44 +47,20 @@ class DDRDataGet:
         Raises:
             ValueError: 当 search_type 或 search_name 无效时抛出。
         """
-        try:
-            # 对 search_type 进行校验
-            if fun in ["pre_search", "result_page"]:
-                if search_type not in ["map", "mapper", "player"]:
-                    raise ValueError(f"不存在的类型: {search_type}")
-            elif fun in ["profile_json"]:
-                if search_type not in ["map", "player"]:
-                    raise ValueError(f"不存在的类型: {search_type}")
-            # 对 search_name 为空 进行校验
-            if not search_name:
-                raise ValueError("名称不能为空")
-            # 更改 search_name 符合 URL 格式
-            # hexed_search_name = quote(search_name)
-            # if fun in ["pre_search", "profile_json"]:
-            #     encoded_search_name = hexed_search_name
-            #     logger.debug(f"fun: {fun}, type: {search_type}, name: {search_name}, encoded_name: {encoded_search_name}")
-            # elif fun in ["result_page"]:
-            #     encoded_search_name = re.sub(
-            #         r'%([0-9A-Fa-f]{2})',
-            #         # lambda match: f"-{int(match.group(1),16)}-",
-            #         # hexed_search_name
-            #         lambda match: f"\\u{int(match.group(1), 16):04x}",
-            #         hexed_search_name.encode('unicode_escape').decode('ascii')
-            #     )
-            #     logger.debug(f"fun: {fun}, type: {search_type}, name: {search_name}, encoded_name: {encoded_search_name}")
-            
-            return {"search_type":search_type,"search_name":search_name}
+        # 对 search_type 进行校验
+        if fun in ["pre_search", "result_page"]:
+            if search_type not in ["map", "mapper", "player"]:
+                raise ValueError(f"不存在的类型: {search_type}")
+        elif fun in ["profile_json"]:
+            if search_type not in ["map", "player"]:
+                raise ValueError(f"不存在的类型: {search_type}")
+        else:
+            raise ValueError(f"不存在的功能: {fun}")
+        # 对 search_name 为空 进行校验
+        if not search_name:
+            raise ValueError("名称不能为空")
+        return {"search_type":search_type,"search_name":search_name}
 
-        except ValueError as ve:
-            # 处理无效的 search_type 或 search_name 参数
-            error_message = f"ValueError: {ve}"
-            logger.error(error_message)
-            return {"error": error_message}
-        except Exception as e:
-            # 处理其他异常，例如网络错误
-            error_message = f"An error occurred: {e}"
-            logger.error(error_message)
-            return {"error": error_message}
 
     async def pre_search(self, search_type: str, search_name: str) -> Union[dict, Dict[str, str]]:
         """
@@ -97,12 +73,11 @@ class DDRDataGet:
         Returns:
             Union[dict, Dict[str, str]]: 返回包含搜索结果的字典，或者包含错误信息的字典。
         """
-        # arg_convert 参数合规性检查转换
         converted_args = self.arg_convert(search_type, search_name, "pre_search")
-        search_type = converted_args.get("search_type","")
-        search_name = converted_args.get("search_name","")
+        search_type = converted_args.get("search_type", "")
+        search_name = converted_args.get("search_name", "")
         logger.debug(f"search_type: {search_type}, search_name: {search_name}")
-        # 逻辑
+
         url = ""
         if search_type == "map":
             url = constants.MAP_QUERY_URL.format(search_name)
@@ -113,7 +88,7 @@ class DDRDataGet:
         logger.debug(f"url: {url}")
         return await self.net.get_json(url)
 
-    async def result_page(self, search_type: str,search_name: str) -> Union[str, Dict[str, str]]:
+    async def result_page(self, search_type: str, search_name: str) -> Union[str, Dict[str, str]]:
         """
         获取搜索结果页面，异步。
         
@@ -124,11 +99,11 @@ class DDRDataGet:
         Returns:
             Union[str, Dict[str, str]]: 返回搜索结果页面的 HTML 内容，或者包含错误信息的字典。
         """
-        # arg_convert 参数合规性检查转换
-        converted_args = self.arg_convert(search_type, search_name, "pre_search")
-        search_type = converted_args.get("search_type","")
-        search_name = converted_args.get("search_name","")
-        # 逻辑
+        converted_args = self.arg_convert(search_type, search_name, "result_page")
+        search_type = converted_args.get("search_type", "")
+        search_name = converted_args.get("search_name", "")
+        logger.debug(f"search_type: {search_type}, search_name: {search_name}")
+
         url = ""
         if search_type == "map":
             url = constants.MAP_PAGE_URL.format(search_name)

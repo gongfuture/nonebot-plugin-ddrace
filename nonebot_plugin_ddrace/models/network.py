@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 from nonebot.log import logger
 from httpx import HTTPError, AsyncClient, HTTPStatusError
 from bs4 import BeautifulSoup
-from ..utils import constants
 
 
 async def catch_error(func: Callable[..., Awaitable[Any]], *args, **kwargs) -> Any:
