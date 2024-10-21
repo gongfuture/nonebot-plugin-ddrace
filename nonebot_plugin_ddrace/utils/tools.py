@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 from nonebot import require
 require("nonebot_plugin_localstore")
 import nonebot_plugin_localstore as store
@@ -77,6 +78,41 @@ class InputCheck:
         if isinstance(types, type):
             types = (types,)
         return isinstance(value, types)
+
+    def custom_escape(self, text: str) -> str:
+        """
+        自定义转义函数，将 URL 中的特殊字符转义成相应的百分比编码，并排除控制字符。
+        """
+        text = re.sub(r'[\r\n\t]', '', text)
+        
+        escape_map = {
+            ' ': '%20',
+            '+': '%2B',
+            '&': '%26',
+            '=': '%3D',
+            '<': '%3C',
+            '>': '%3E',
+            '"': '%22',
+            '#': '%23',
+            ',': '%2C',
+            '%': '%25',
+            '{': '%7B',
+            '}': '%7D',
+            '|': '%7C',
+            '\\': '%5C',
+            '^': '%5E',
+            # '~': '%7E',
+            '[': '%5B',
+            ']': '%5D',
+            '`': '%60',
+            ';': '%3B',
+            '/': '%2F',
+            '?': '%3F',
+            ':': '%3A',
+            '@': '%40',
+            '$': '%24'
+        }
+        return ''.join(escape_map.get(c, c) for c in text)
 
 
 if __name__ == "__main__":
