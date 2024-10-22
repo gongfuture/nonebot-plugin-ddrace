@@ -6,7 +6,7 @@ try:
     import ujson as json
 except ModuleNotFoundError:
     import json
-from .utils import PathClass, constants
+from .utils import constants
 
 
 class PluginConfig(BaseModel):
@@ -20,14 +20,14 @@ class PluginConfig(BaseModel):
 
 
 driver = get_driver()
-ddr_config = get_plugin_config(PluginConfig)
+pluginconfig = get_plugin_config(PluginConfig)
 
 
 @driver.on_startup
 async def _() -> None:
-    ddr_config_path: Path = PathClass().ddrconfigpath()
-    ddr_data_path: Path = PathClass().ddrdatapath()
-    ddr_cache_path: Path = PathClass().ddrcachepath()
+    ddr_config_path: Path = constants.CONFIG_PATH
+    ddr_data_path: Path = constants.DATA_PATH
+    ddr_cache_path: Path = constants.CACHE_PATH
 
     if not ddr_config_path.exists():
         ddr_config_path.mkdir(parents=True, exist_ok=True)

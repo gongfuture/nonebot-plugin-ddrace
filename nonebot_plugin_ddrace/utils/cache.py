@@ -4,14 +4,14 @@ from nonebot import require, logger
 from pathlib import Path
 from datetime import datetime
 from ..utils import PathClass, constants
-from ..config import PluginConfig
+from ..config import pluginconfig
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
 import hashlib
 
 cache_path:Path = PathClass().ddrcachepath()
 cache_time_file = constants.CACHE_TIME_FILE
-cache_time = PluginConfig().ddr_cache_time
+cache_time = pluginconfig.ddr_cache_time
 
 class CacheClass:
 
@@ -117,4 +117,4 @@ class CacheClass:
                         logger.debug(f"Deleted cache: {file.name}")
                     except Exception as e:
                         logger.error(f"Failed to delete cache: {file.name}, error: {e}")
-        logger.info("Cleared cache")
+        logger.debug("Cleared cache")

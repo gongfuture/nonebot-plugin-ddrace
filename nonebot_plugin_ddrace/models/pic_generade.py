@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from nonebot import require, logger
 require("nonebot_plugin_htmlrender")
 from nonebot_plugin_htmlrender import html_to_pic, md_to_pic
-from ..utils import InputCheck, PathClass
+from ..utils import input_check, PathClass
 
 def json2md(json_data: dict, title_filter: List[str]) -> str:
     """
@@ -70,7 +70,6 @@ def add_css(html_str: str, css_content: str = "", css_path: Union[Path, str] = "
     Returns:
         str: 添加 CSS 样式后的 HTML 字符串。
     """
-    input_check = InputCheck()
     if input_check.check_type_empty(html_str, str):
         if input_check.check_type(css_path, str):
             css_path = Path(css_path)
@@ -169,7 +168,6 @@ async def html2pic(
     Returns:
         Union[bytes, str]: 生成的图片的字节数据，如果失败则返回错误信息。
     """
-    input_check = InputCheck()
     if input_check.check_type_empty(html_str, str):
         logger.trace("html2pic: HTML 解析成功")
         try:
