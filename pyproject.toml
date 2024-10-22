@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-ddrace"
-version = "0.0.4"
+version = "0.0.5"
 description = "提供 DDNet 成绩查询功能"
 authors = ["gongfuture <gongfuture@outlook.com>"]
 license = "MIT"
