@@ -18,6 +18,7 @@ from . import _version
 require("nonebot_plugin_htmlrender")
 require("nonebot_plugin_saa")
 require("nonebot_plugin_localstore")
+require("nonebot_plugin_apscheduler")
 
 from nonebot_plugin_saa import MessageFactory, MessageSegmentFactory, Image, Text
 
@@ -44,5 +45,4 @@ __plugin_meta__ = PluginMetadata(
     },
 )
 #endregion
-
 
