@@ -1,11 +1,21 @@
+import nonebot
 from .tools import PathClass
+from ..config import pluginconfig
 
+config = nonebot.get_driver().config
+
+PRE_ALIAS = pluginconfig.ddr_command_pre_alias
+COMMAND_START = config.command_start
+COMMADN_SEP = config.command_sep
 
 # region Path
+CONFIG_PATH = PathClass().ddrconfigpath()
+DATA_PATH = PathClass().ddrdatapath()
+CACHE_PATH = PathClass().ddrcachepath()
 
-CONFIG_JSON_PATH = PathClass().ddrconfigpath() / "ddrconfig.json"
-DATA_JSON_PATH = PathClass().ddrdatapath() / "ddrdata.json"
-CACHE_TIME_FILE = PathClass().ddrcachepath() / "_cache_time_record.json"
+CONFIG_JSON_PATH = CONFIG_PATH / "ddrconfig.json"
+DATA_JSON_PATH = DATA_PATH / "ddrdata.json"
+CACHE_TIME_FILE = CACHE_PATH / "_cache_time_record.json"
 
 # endregion
 

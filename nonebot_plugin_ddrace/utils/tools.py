@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+from typing import Union
 from nonebot import require
 require("nonebot_plugin_localstore")
 import nonebot_plugin_localstore as store
@@ -113,6 +114,14 @@ class InputCheck:
             '$': '%24'
         }
         return ''.join(escape_map.get(c, c) for c in text)
+
+    def check_id_types(self,group_id: Union[int, str] = 0, user_id: Union[int, str] = 0):
+        if isinstance(group_id, str):
+            error_msg = "group_id must be int" 
+            raise ValueError(error_msg)
+        if isinstance(user_id, str):
+            error_msg = "user_id must be int" 
+            raise ValueError(error_msg)
 
 
 if __name__ == "__main__":
