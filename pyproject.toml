@@ -18,7 +18,7 @@ packages = [{ include = "nonebot_plugin_ddrace"}]
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 nonebot2 = ">=2.3.3"
-httpx = ">=0.24.1,<0.27.2"
+httpx = ">=0.24.1,<0.27.3"
 beautifulsoup4 = "^4.12.3"
 nonebot_plugin_apscheduler = ">=0.2.0"
 nonebot-plugin-localstore = ">=0.7.0"
