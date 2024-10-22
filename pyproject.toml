@@ -34,11 +34,6 @@ nonebot-adapter-onebot = "^2.4.5"
 "Bug Tracker" = "https://github.com/gongfuture/nonebot-plugin-ddrace/issues"
 
 
-[[tool.poetry.source]]
-name = "aliyun"
-url = "https://mirrors.aliyun.com/pypi/simple"
-
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
