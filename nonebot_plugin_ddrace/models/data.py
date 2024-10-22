@@ -23,7 +23,7 @@ class UserBindClass:
     def load_data(self) -> UserData:
         if not os.path.exists(data_file):
             with open(data_file, 'w', encoding='utf-8') as f:
-                json.dump(dict, {"group": {}, "private": {}}, ensure_ascii=False, indent=4)
+                json.dump({"group": {}, "private": {}}, f, ensure_ascii=False, indent=4)
                 logger.info("Initialized the ddrdata.json of DDRace plugin")
             return {"group": {}, "private": {}}
         with open(data_file, 'r', encoding='utf-8') as f:
